@@ -61,4 +61,11 @@ for i in `cat $subdomain_path/alive.txt`
 do
         ffuf -u https://$i/FUZZ -w /usr/share/wordlists/amass/all.txt -recursion >> $directory_enum/ffuf_enum.txt
 done
+
+echo -e "${RED} [+] Getting all urls and checking probable XSS....${RESET}"
+echo "$1" | gau | kxss >> $gau/gau_xss.txt
+
+echo -e "${RED} [+] Running Nuclei Scanner... Maybe It Will give you some Info.... ${RESET}"
+cat $subdomain_path/alive.txt | httpx | nuclei >> $domain/nuclei.txt
+
 echo -e "DONE"
